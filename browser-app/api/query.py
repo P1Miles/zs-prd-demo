@@ -19,6 +19,7 @@ def reserve(ip):
     if result.get('result')!=1:raise ValueError('当前调用额度已用完，请稍后再试；仍可手写 SQL 分析')
 
 def process(data,ip):
+    if data.get('mode')=='status':return {'model_enabled':bool(os.environ.get('DEEPSEEK_API_KEY') and os.environ.get('DEEPSEEK_MODEL'))}
     if data.get('mode')=='validate':return {'sql':validate(data.get('sql',''))}
     q=data.get('question','');schema=data.get('schema',[])
     if not isinstance(q,str) or not 1<=len(q)<=2000 or not isinstance(schema,list) or not 1<=len(schema)<=200:raise ValueError('问题或字段数量超出限制')
