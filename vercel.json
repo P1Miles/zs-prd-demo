@@ -1,6 +1,30 @@
 {
   "framework": null,
-  "outputDirectory": ".",
-  "buildCommand": "",
-  "cleanUrls": false
+  "buildCommand": "npm run build --prefix browser-app",
+  "outputDirectory": "browser-app/dist",
+  "functions": {
+    "api/query.py": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'self'"
+        }
+      ]
+    }
+  ],
+  "installCommand": "npm ci --prefix browser-app"
 }
