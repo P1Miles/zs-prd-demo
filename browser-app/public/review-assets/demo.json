@@ -1,0 +1,145 @@
+{
+  "name": "知数示范订单_360条.csv",
+  "rows": 360,
+  "period": "2026年1—6月",
+  "synthetic": true,
+  "headers": [
+    "order_id",
+    "order_date",
+    "order_month",
+    "region",
+    "channel",
+    "category",
+    "status",
+    "quantity",
+    "gross_amount",
+    "discount_amount",
+    "paid_amount",
+    "refund_amount",
+    "net_amount"
+  ],
+  "types": [
+    "VARCHAR",
+    "DATE",
+    "VARCHAR",
+    "VARCHAR",
+    "VARCHAR",
+    "VARCHAR",
+    "VARCHAR",
+    "BIGINT",
+    "DECIMAL(18,2)",
+    "DECIMAL(18,2)",
+    "DECIMAL(18,2)",
+    "DECIMAL(18,2)",
+    "DECIMAL(18,2)"
+  ],
+  "examples": [
+    {
+      "id": "overview",
+      "title": "订单规模",
+      "question": "一共有多少条订单记录？",
+      "sql": "SELECT COUNT(*) AS order_count FROM data",
+      "outputs": [
+        "table",
+        "summary"
+      ]
+    },
+    {
+      "id": "region",
+      "title": "区域表现",
+      "question": "按region分组汇总net_amount，按net_amount总和降序排列。",
+      "sql": "SELECT region, SUM(net_amount) AS net_total FROM data GROUP BY region ORDER BY net_total DESC",
+      "outputs": [
+        "chart",
+        "table"
+      ]
+    },
+    {
+      "id": "month",
+      "title": "每月趋势",
+      "question": "按order_month分组汇总net_amount，按月份升序排列。",
+      "sql": "SELECT order_month, SUM(net_amount) AS net_total FROM data GROUP BY order_month ORDER BY order_month",
+      "outputs": [
+        "chart",
+        "table"
+      ]
+    },
+    {
+      "id": "channel",
+      "title": "渠道对比",
+      "question": "按channel分组汇总net_amount，按总和降序排列。",
+      "sql": "SELECT channel, SUM(net_amount) AS net_total FROM data GROUP BY channel ORDER BY net_total DESC",
+      "outputs": [
+        "chart"
+      ]
+    },
+    {
+      "id": "category",
+      "title": "品类贡献",
+      "question": "按category分组汇总net_amount，按总和降序排列。",
+      "sql": "SELECT category, SUM(net_amount) AS net_total FROM data GROUP BY category ORDER BY net_total DESC",
+      "outputs": [
+        "chart",
+        "summary"
+      ]
+    },
+    {
+      "id": "status",
+      "title": "订单状态",
+      "question": "按status分组统计记录数，按status升序排列。",
+      "sql": "SELECT status, COUNT(*) AS order_count FROM data GROUP BY status ORDER BY status",
+      "outputs": [
+        "table",
+        "chart"
+      ]
+    },
+    {
+      "id": "refund",
+      "title": "退款金额",
+      "question": "只统计status精确等于已退款的refund_amount总和。",
+      "sql": "SELECT SUM(refund_amount) AS refund_total FROM data WHERE status='已退款'",
+      "outputs": [
+        "table",
+        "summary"
+      ]
+    },
+    {
+      "id": "average",
+      "title": "完成订单客单价",
+      "question": "只计算status精确等于完成的订单paid_amount平均值。",
+      "sql": "SELECT AVG(paid_amount) AS average_paid FROM data WHERE status='完成'",
+      "outputs": [
+        "table"
+      ]
+    },
+    {
+      "id": "top",
+      "title": "高金额订单",
+      "question": "列出status等于完成的order_id、region和net_amount，按net_amount降序、order_id升序取前10条。",
+      "sql": "SELECT order_id,region,net_amount FROM data WHERE status='完成' ORDER BY net_amount DESC,order_id LIMIT 10",
+      "outputs": [
+        "table",
+        "sql"
+      ]
+    },
+    {
+      "id": "draft",
+      "title": "只生成 SQL",
+      "question": "生成按region汇总net_amount的SQL，按region升序。",
+      "sql": "SELECT region,SUM(net_amount) AS net_total FROM data GROUP BY region ORDER BY region",
+      "outputs": [
+        "sql"
+      ]
+    },
+    {
+      "id": "empty",
+      "title": "空结果体验",
+      "question": "列出region精确等于海外的order_id和region。",
+      "sql": "SELECT order_id,region FROM data WHERE region='海外'",
+      "outputs": [
+        "table",
+        "summary"
+      ]
+    }
+  ]
+}

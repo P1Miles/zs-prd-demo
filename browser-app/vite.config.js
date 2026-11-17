@@ -1,2 +1,2 @@
 import {defineConfig} from 'vite';
-export default defineConfig({server:{proxy:{'/api':'http://127.0.0.1:8012'}},build:{assetsInlineLimit:0}});
+export default defineConfig({server:{proxy:{'/api':'http://127.0.0.1:8012'}},build:{assetsInlineLimit:0,rollupOptions:{input:{review:'index.html',experience:'experience.html'}}}});
