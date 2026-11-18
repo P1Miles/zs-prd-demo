@@ -35,7 +35,7 @@ def process(data,ip):
     if repair:
         if repair.get('code') not in ['BINDER','PARSER']:raise ValueError('该错误不支持自动修复')
         payload['repair']={'sql':validate(repair.get('sql','')),'code':repair['code']}
-    result=request_json('https://api.deepseek.com/chat/completions',{'model':model,'messages':[{'role':'system','content':Path(__file__).with_name('prompt.txt').read_text()},{'role':'user','content':json.dumps(payload,ensure_ascii=False)}],'response_format':{'type':'json_object'},'max_tokens':2500,'stream':False},key)
+    result=request_json('https://api.deepseek.com/chat/completions',{'model':model,'messages':[{'role':'system','content':Path(__file__).with_name('prompt.txt').read_text()},{'role':'user','content':json.dumps(payload,ensure_ascii=False)}],'response_format':{'type':'json_object'},'thinking':{'type':'disabled'},'max_tokens':2500,'stream':False},key)
     plan=json.loads(result['choices'][0]['message']['content'])
     if plan.get('action') not in ['QUERY','CLARIFY','REFUSE']:raise ValueError('模型返回格式异常，请重试')
     if not isinstance(plan.get('message'),str) or len(plan['message'])>1000:raise ValueError('模型返回格式异常')
