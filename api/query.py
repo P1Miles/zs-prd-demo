@@ -8,7 +8,7 @@ def request_json(url,body,token):
     with urllib.request.urlopen(req,timeout=18) as r:return json.load(r)
 
 def reserve(ip):
-    url=os.environ.get('UPSTASH_REDIS_REST_URL',''); token=os.environ.get('UPSTASH_REDIS_REST_TOKEN','');salt=os.environ.get('QUOTA_SALT','')
+    url=(os.environ.get('UPSTASH_REDIS_REST_URL') or os.environ.get('KV_REST_API_URL','')); token=(os.environ.get('UPSTASH_REDIS_REST_TOKEN') or os.environ.get('KV_REST_API_TOKEN',''));salt=os.environ.get('QUOTA_SALT','')
     if not url.startswith('https://') or not token or len(salt)<32:raise ValueError('站点额度服务尚未配置，请联系站点管理员')
     ident=hashlib.sha256((salt+ip).encode()).hexdigest()
     # Atomic admission across all function instances; failures still count.
